@@ -1,0 +1,45 @@
+.ModalContainer {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    display: grid;
+    top:0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    grid-template-rows: auto auto;
+}
+
+.ModalContainer .ContentModalContainer {
+    height: 100%;
+    width: 75%;
+    display: grid;
+    border: solid 1px #8B8B8B;
+    grid-template-columns: auto 68%;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.ModalContainer .ContentModalContainer .CalendarContainer {
+    display: flex;
+    justify-content:center;
+    align-items: center;
+}
+
+.CourtModalDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    margin-left: 40px;
+}
+
+.CourtModalDetailsContainer .CourtModalDetailsImage img {
+    width: 90%;
+    aspect-ratio: 4/3;
+    object-fit: contain;
+}
+
+.CourtModalDetailsContainer .CourtModalDetails {
+    padding: 20px;
+}

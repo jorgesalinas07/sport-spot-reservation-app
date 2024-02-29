@@ -1,0 +1,21 @@
+.CalendarContainer {
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.CalendarContainer .CalendarContentContainer {
+    align-items: center;
+}
+
+.CalendarContainer .CalendarContentContainer .closeModal {
+    position: absolute;
+    right: 14%;
+    width: 55px;
+    height: 25px;
+    top: 15px;
+}
+
+.AddToMyCalendarButtonContainer {
+    margin-top: 50px;
+    margin-left: -300px;
+}
