@@ -9,7 +9,6 @@
 
 .CalendarContainer .CalendarContentContainer .closeModal {
     position: absolute;
-    color: red;
     right: 14%;
     width: 55px;
     height: 25px;

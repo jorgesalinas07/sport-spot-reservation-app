@@ -4,6 +4,7 @@ import { Header } from "./layout/header";
 import { ResultBar } from "./results/result";
 import { Filter } from "./filter/filter";
 import { ResultTable } from "./results/resultTable/resultTable";
+import { MyCalendar } from "./MyCalendar/myCalendar";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <ResultTable />
           </div>
         </div>
+        <MyCalendar />
       </div>
     </SearchProvider>
   );

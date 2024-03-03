@@ -14,12 +14,20 @@
 background-color: red;
 }
 
+.ResultTableContainer .SportSpotsContainer.customStyle {
+    grid-template-columns: auto auto;
+}
+
 .CardContainer {
     margin-top: 20px;
     border-radius: 10px;
     flex-direction: column;
     border: solid 1px grey;
     height: 392px;
+}
+
+.CardContainer.customStyle {
+    height: 433px;
 }
 
 .CardContainer .CardImageContainer img {

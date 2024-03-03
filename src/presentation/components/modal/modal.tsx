@@ -1,6 +1,7 @@
 import "./../../styles/modal/modal.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { CourtCalendar } from "./calendar";
+import { CalendarProvider } from "../../../contexts/CalendarContext";
 import { Court } from "../../../domain/entities/sportSport";
 import { useContext } from "react";
 import { SportSpotsAPIContext } from "../../../contexts/SearchContext";
@@ -12,7 +13,9 @@ function Modal() {
     <div className="ModalContainer">
       <div className="ContentModalContainer">
         <CourtDetails sportCourt={sportCourt} />
-        <CourtCalendar />
+        <CalendarProvider>
+          <CourtCalendar />
+        </CalendarProvider>
       </div>
     </div>
   );

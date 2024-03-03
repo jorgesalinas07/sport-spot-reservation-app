@@ -1,25 +1,39 @@
 import { Calendar, dayjsLocalizer } from "react-big-calendar";
-import {SportSpotsAPIContext} from "../../../contexts/SearchContext";
-import { useContext, useState } from "react";
+import {
+  SportSpotsAPIContext,
+  spotBooking,
+} from "../../../contexts/SearchContext";
+import { useContext } from "react";
 import dayjs from "dayjs";
 import { Button } from "antd";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { Court } from "../../../domain/entities/sportSport";
+import { Court, Reservation } from "../../../domain/entities/sportSport";
 import "../../styles/modal/calendar.css";
-
-interface CalendarEvent {
-  start: Date;
-  end: Date;
-  title: string;
-  isNewBook: boolean;
-}
+import {
+  CalendarContext,
+  CalendarEvent,
+} from "../../../contexts/CalendarContext";
 
 function CourtCalendar() {
   const {
     sportCourt,
+    setSpotBookings,
     setIsModalOpen,
+    setIsMyReservationOpen,
   } = useContext(SportSpotsAPIContext);
 
+  const { setCalendarEvent, calendarEvent } = useContext(CalendarContext);
+
+  const handleAddToMyCalendar = () => {
+    setCloseModal();
+
+    setSpotBookings((prevSpotBookings) => {
+      return getSpotBookingsUpdate(prevSpotBookings, sportCourt, calendarEvent);
+    });
+
+    setCalendarEvent([]);
+    setIsMyReservationOpen(true);
+  };
 
   const setCloseModal = () => {
     setIsModalOpen(false);
@@ -32,7 +46,7 @@ function CourtCalendar() {
         <AiOutlineCloseCircle className="closeModal" onClick={setCloseModal} />
       </div>
       <div className="AddToMyCalendarButtonContainer">
-        <Button type="primary">
+        <Button type="primary" onClick={handleAddToMyCalendar}>
           Add to My Calendar
         </Button>
       </div>
@@ -41,8 +55,8 @@ function CourtCalendar() {
 }
 
 function CalendarRender({ sportCourt }: { sportCourt: Court }) {
-
-  const [calendarEvent, setCalendarEvent] = useState<CalendarEvent[]>([]);
+  const { setCalendarEvent, calendarEvent } = useContext(CalendarContext);
+  const { spotBookings } = useContext(SportSpotsAPIContext);
 
   const handleSelectSlot = ({ start, end }: { start: any; end: any }) => {
     if (!isEventStartInFuture(start)) {
@@ -61,8 +75,15 @@ function CalendarRender({ sportCourt }: { sportCourt: Court }) {
 
   const spotReservationEvents: CalendarEvent[] =
     getSpotReservationEvents(sportCourt);
+  const spotBookingEvents: CalendarEvent[] = getSpotBookingEvents(
+    spotBookings,
+    sportCourt
+  );
 
-  var displayedEvents = calendarEvent.concat(spotReservationEvents);
+  var displayedEvents = calendarEvent.concat(
+    spotReservationEvents,
+    spotBookingEvents
+  );
 
   const localizer = dayjsLocalizer(dayjs);
 
@@ -97,6 +118,49 @@ function getSpotReservationEvents(sportCourt: Court) {
     title: "Rsved",
     isNewBook: false,
   }));
+}
+
+function getSpotBookingEvents(spotBookings: spotBooking[], sportCourt: Court) {
+  return spotBookings
+    .filter((spotBooking) => spotBooking.court.id === sportCourt.id)
+    .flatMap((spotBooking) =>
+      spotBooking.reservations.map((reservation) => ({
+        start: reservation.start_date,
+        end: reservation.end_date,
+        title: "Rsved",
+        isNewBook: true,
+      }))
+    );
+}
+
+function getSpotBookingsUpdate(
+  spotBookings: spotBooking[],
+  sportCourt: Court,
+  calendarEvent: CalendarEvent[]
+) {
+  const reservations: Reservation[] = calendarEvent.map((event) => ({
+    id: 1,
+    start_date: event.start,
+    end_date: event.end,
+  }));
+
+  const isCourtBooked = spotBookings.some(
+    (prevSpotBooking) => prevSpotBooking.court.id === sportCourt.id
+  );
+  if (isCourtBooked) {
+    return spotBookings.flatMap((prevSpotBooking) => {
+      if (prevSpotBooking.court.id === sportCourt.id) {
+        return [
+          {
+            court: prevSpotBooking.court,
+            reservations: prevSpotBooking.reservations.concat(reservations),
+          },
+        ];
+      }
+      return [prevSpotBooking];
+    });
+  }
+  return [...spotBookings, { court: sportCourt, reservations: reservations }];
 }
 
 function isEventStartInFuture(start: Date): boolean {
