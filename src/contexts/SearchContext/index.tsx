@@ -7,8 +7,12 @@ import {
   useState,
 } from "react";
 import { getSportSpots } from "../../infrastructure/helper";
-import { Court, Sport } from "../../domain/entities/sportSport";
+import { Court, Reservation, Sport } from "../../domain/entities/sportSport";
 
+interface spotBooking {
+  reservations: Reservation[];
+  court: Court;
+}
 
 const defaultCourt: Court = {
   id: 0,
@@ -28,11 +32,15 @@ interface SportSpotsContextValue {
   searchValue: string;
   sportFilters: Sport[];
   sportCourt: Court;
+  spotBookings: spotBooking[];
+  isMyReservationOpen: boolean;
   setIsModalOpen: Dispatch<SetStateAction<boolean>>;
+  setSpotBookings: Dispatch<SetStateAction<spotBooking[]>>;
   setSearchValue: Dispatch<SetStateAction<string>>;
   setPriceSortOrder: Dispatch<SetStateAction<string>>;
   setSportFilters: Dispatch<SetStateAction<Sport[]>>;
   setSpotCourt: Dispatch<SetStateAction<Court>>;
+  setIsMyReservationOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 const SportSpotsAPIContext = createContext<SportSpotsContextValue>({
@@ -42,21 +50,27 @@ const SportSpotsAPIContext = createContext<SportSpotsContextValue>({
   searchValue: "",
   sportFilters: [],
   sportCourt: defaultCourt,
+  spotBookings: [],
+  isMyReservationOpen: false,
   setIsModalOpen: () => {},
+  setSpotBookings: () => {},
   setSearchValue: () => {},
   setPriceSortOrder: () => {},
   setSportFilters: () => {},
   setSpotCourt: () => {},
+  setIsMyReservationOpen: () => {},
 });
 
 function SearchProvider({ children }: { children: ReactNode }) {
   const [sportCourts, setSportCourts] = useState<Court[]>([]);
   const [isSpotLoading, setIsSpotLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [spotBookings, setSpotBookings] = useState<spotBooking[]>([]);
   const [searchValue, setSearchValue] = useState<string>("");
   const [priceSortOrder, setPriceSortOrder] = useState("Default");
   const [sportFilters, setSportFilters] = useState<Sport[]>([]);
   const [sportCourt, setSpotCourt] = useState<Court>(defaultCourt);
+  const [isMyReservationOpen, setIsMyReservationOpen] =
     useState<boolean>(false);
 
   var filteredSportCourts: Court[] = [];
@@ -90,11 +104,15 @@ function SearchProvider({ children }: { children: ReactNode }) {
         searchValue,
         sportFilters,
         sportCourt,
+        spotBookings,
+        isMyReservationOpen,
         setIsModalOpen,
+        setSpotBookings,
         setSearchValue,
         setPriceSortOrder,
         setSportFilters,
         setSpotCourt,
+        setIsMyReservationOpen,
       }}
     >
       {children}
@@ -159,4 +177,4 @@ function sortCourtsByPrice(courts: Court[], priceSortOrder: string) {
   return courts;
 }
 
-export { SportSpotsAPIContext, SearchProvider };
+export { SportSpotsAPIContext, SearchProvider, type spotBooking };

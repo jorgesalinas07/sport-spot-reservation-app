@@ -9,12 +9,17 @@ function ResultTable() {
     filteredSportCourts,
     isSpotLoading,
     isModalOpen,
+    isMyReservationOpen,
   } = useContext(SportSpotsAPIContext);
 
   return (
     <div className="ResultTableContainer">
       <h2>Results:</h2>
-      <div className="SportSpotsContainer">
+      <div
+        className={`SportSpotsContainer ${
+          isMyReservationOpen && "customStyle"
+        }`}
+      >
         {isSpotLoading ? (
           <span className="loader"></span>
         ) : (
@@ -29,7 +34,7 @@ function ResultTable() {
 }
 
 function SpotCard({ court }: { court: Court }) {
-  const { setIsModalOpen, setSpotCourt } =
+  const { setIsModalOpen, setSpotCourt, isMyReservationOpen } =
     useContext(SportSpotsAPIContext);
 
   const openModal = () => {
@@ -38,7 +43,7 @@ function SpotCard({ court }: { court: Court }) {
   };
   return (
     <div
-      className="CardContainer"
+      className={`CardContainer ${isMyReservationOpen && "customStyle"}`}
       onClick={openModal}
     >
       <div className="CardImageContainer">
