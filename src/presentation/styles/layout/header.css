@@ -1,0 +1,66 @@
+.HeaderContainer {
+    display: flex;
+    height: 80px;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(90deg, rgb(8, 110, 128) 0%, rgba(140,228,252,1) 100%);
+    width: 100%;
+}
+
+.LogoContainer {
+    display: flex;
+    align-items: center;
+}
+
+.LogoContainer img {
+    height: 40px;
+    margin: 0 10px 0 20px;
+}
+
+.LogoContainer h1 {
+    margin: 0;
+    font-size: x-large;
+    color: rgba(255, 255, 255, 0.87);
+}
+
+.SearchContainer {
+    height: 20px;
+    align-items: center;
+    width: 40%;
+    min-width: 500px;
+    display: flex;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px 20px;
+    justify-content: space-between;
+}
+
+.SearchContainer input {
+    width: 90%;
+    background-color: white;
+    border-width: 0;
+    color: black
+}
+
+.SearchContainer input:focus {
+    outline: none;
+}
+
+.SearchContainer img {
+    height: 20px;
+}
+
+.SearchContainer img {
+    height: 20px;
+}
+
+.CalendarIconContainer {
+    display: flex;
+    font-size: 40px;
+    align-items: center;
+    margin: 0 20px 0 0;
+}
+
+.CalendarIconContainer img{
+    height: 90px;
+}
