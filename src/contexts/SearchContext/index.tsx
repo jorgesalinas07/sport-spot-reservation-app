@@ -9,32 +9,55 @@ import {
 import { getSportSpots } from "../../infrastructure/helper";
 import { Court, Sport } from "../../domain/entities/sportSport";
 
+
+const defaultCourt: Court = {
+  id: 0,
+  sport: "",
+  title: "",
+  dimension: "",
+  image: "",
+  description: "",
+  reservations: [],
+  price_per_hour: 0,
+};
+
 interface SportSpotsContextValue {
   filteredSportCourts: Court[];
   isSpotLoading: boolean;
+  isModalOpen: boolean;
   searchValue: string;
   sportFilters: Sport[];
+  sportCourt: Court;
+  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
   setSearchValue: Dispatch<SetStateAction<string>>;
   setPriceSortOrder: Dispatch<SetStateAction<string>>;
   setSportFilters: Dispatch<SetStateAction<Sport[]>>;
+  setSpotCourt: Dispatch<SetStateAction<Court>>;
 }
 
 const SportSpotsAPIContext = createContext<SportSpotsContextValue>({
   filteredSportCourts: [],
   isSpotLoading: false,
+  isModalOpen: false,
   searchValue: "",
   sportFilters: [],
+  sportCourt: defaultCourt,
+  setIsModalOpen: () => {},
   setSearchValue: () => {},
   setPriceSortOrder: () => {},
   setSportFilters: () => {},
+  setSpotCourt: () => {},
 });
 
 function SearchProvider({ children }: { children: ReactNode }) {
   const [sportCourts, setSportCourts] = useState<Court[]>([]);
   const [isSpotLoading, setIsSpotLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchValue, setSearchValue] = useState<string>("");
   const [priceSortOrder, setPriceSortOrder] = useState("Default");
   const [sportFilters, setSportFilters] = useState<Sport[]>([]);
+  const [sportCourt, setSpotCourt] = useState<Court>(defaultCourt);
+    useState<boolean>(false);
 
   var filteredSportCourts: Court[] = [];
 
@@ -63,11 +86,15 @@ function SearchProvider({ children }: { children: ReactNode }) {
       value={{
         filteredSportCourts,
         isSpotLoading,
+        isModalOpen,
         searchValue,
         sportFilters,
+        sportCourt,
+        setIsModalOpen,
         setSearchValue,
         setPriceSortOrder,
         setSportFilters,
+        setSpotCourt,
       }}
     >
       {children}

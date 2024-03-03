@@ -2,11 +2,13 @@ import { useContext } from "react";
 import { SportSpotsAPIContext } from "../../../../contexts/SearchContext";
 import { Reservation, Court } from "../../../../domain/entities/sportSport";
 import "./../../../styles/result/resultTable.css";
+import { Modal } from "../../modal/modal";
 
 function ResultTable() {
   const {
     filteredSportCourts,
     isSpotLoading,
+    isModalOpen,
   } = useContext(SportSpotsAPIContext);
 
   return (
@@ -21,14 +23,23 @@ function ResultTable() {
           ))
         )}
       </div>
+      {isModalOpen && <Modal />}
     </div>
   );
 }
 
 function SpotCard({ court }: { court: Court }) {
+  const { setIsModalOpen, setSpotCourt } =
+    useContext(SportSpotsAPIContext);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    setSpotCourt(court);
+  };
   return (
     <div
-      className={"CardContainer"}
+      className="CardContainer"
+      onClick={openModal}
     >
       <div className="CardImageContainer">
         <img src={court.image} />
