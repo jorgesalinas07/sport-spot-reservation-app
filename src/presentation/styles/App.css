@@ -1,0 +1,14 @@
+#root {
+  margin: 0 0;
+  padding: 0;
+}
+
+.ResultAndFilterContainer {
+  display: grid;
+  grid-template-columns: auto 75%;
+  margin-top: 30px;
+}
+
+.GeneralContainer {
+  display: flex;
+}
