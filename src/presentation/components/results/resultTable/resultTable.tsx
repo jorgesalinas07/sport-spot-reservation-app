@@ -19,6 +19,7 @@ function ResultTable() {
         className={`SportSpotsContainer ${
           isMyReservationOpen && "customStyle"
         }`}
+        data-testid="SportSpotsContainer"
       >
         {isSpotLoading ? (
           <span className="loader"></span>
@@ -45,6 +46,7 @@ function SpotCard({ court }: { court: Court }) {
     <div
       className={`CardContainer ${isMyReservationOpen && "customStyle"}`}
       onClick={openModal}
+      data-testid="CardContainerTestId"
     >
       <div className="CardImageContainer">
         <img src={court.image} />
@@ -84,4 +86,4 @@ function Detail({
   );
 }
 
-export { ResultTable };
+export { ResultTable, Detail, SpotCard };

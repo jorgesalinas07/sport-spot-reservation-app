@@ -38,4 +38,4 @@ function CourtDetails({ sportCourt }: { sportCourt: Court }) {
   );
 }
 
-export { Modal };
+export { Modal, CourtDetails };

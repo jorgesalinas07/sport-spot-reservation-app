@@ -125,8 +125,8 @@ function getSpotBookingEvents(spotBookings: spotBooking[], sportCourt: Court) {
     .filter((spotBooking) => spotBooking.court.id === sportCourt.id)
     .flatMap((spotBooking) =>
       spotBooking.reservations.map((reservation) => ({
-        start: reservation.start_date,
-        end: reservation.end_date,
+        start: dayjs(reservation.start_date).toDate(),
+        end: dayjs(reservation.end_date).toDate(),
         title: "Rsved",
         isNewBook: true,
       }))
@@ -140,25 +140,19 @@ function getSpotBookingsUpdate(
 ) {
   const reservations: Reservation[] = calendarEvent.map((event) => ({
     id: 1,
-    start_date: event.start,
-    end_date: event.end,
+    start_date: event.start.toISOString(),
+    end_date: event.end.toISOString(),
   }));
 
   const isCourtBooked = spotBookings.some(
     (prevSpotBooking) => prevSpotBooking.court.id === sportCourt.id
   );
   if (isCourtBooked) {
-    return spotBookings.flatMap((prevSpotBooking) => {
-      if (prevSpotBooking.court.id === sportCourt.id) {
-        return [
-          {
-            court: prevSpotBooking.court,
-            reservations: prevSpotBooking.reservations.concat(reservations),
-          },
-        ];
-      }
-      return [prevSpotBooking];
-    });
+    return appendReservationsToExistingSpotBooking(
+      spotBookings,
+      sportCourt,
+      reservations
+    );
   }
   return [...spotBookings, { court: sportCourt, reservations: reservations }];
 }
@@ -187,4 +181,31 @@ function applyNewEventColor(props: any) {
   return <div style={{ backgroundColor: color }}>{props.event.title}</div>;
 }
 
-export { CourtCalendar };
+function appendReservationsToExistingSpotBooking(
+  spotBookings: spotBooking[],
+  sportCourt: Court,
+  reservations: Reservation[]
+) {
+  return spotBookings.flatMap((prevSpotBooking) => {
+    if (prevSpotBooking.court.id === sportCourt.id) {
+      return [
+        {
+          court: prevSpotBooking.court,
+          reservations: prevSpotBooking.reservations.concat(reservations),
+        },
+      ];
+    }
+    return [prevSpotBooking];
+  });
+}
+
+export {
+  CourtCalendar,
+  getSpotReservationEvents,
+  getSpotBookingEvents,
+  isEventStartInFuture,
+  getNewCalendarEvent,
+  applyNewEventColor,
+  getSpotBookingsUpdate,
+  appendReservationsToExistingSpotBooking,
+};

@@ -7,6 +7,7 @@ import { Button } from "antd";
 import "../../styles/MyCalendar/MyCalendar.css";
 import { AiOutlineCalendar, AiOutlineCloseCircle } from "react-icons/ai";
 import { Reservation } from "../../../domain/entities/sportSport";
+import dayjs from "dayjs";
 
 function MyCalendar() {
   const { isMyReservationOpen, spotBookings, setIsMyReservationOpen } =
@@ -96,20 +97,27 @@ function MyCalendarBookingReservationDetails({
 }: {
   reservation: Reservation;
 }) {
-  const startDateString = reservation.start_date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  const endDateString = reservation.end_date.toLocaleTimeString("en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const startDateString = dayjs(reservation.start_date)
+    .toDate()
+    .toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  const endDateString = dayjs(reservation.end_date)
+    .toDate()
+    .toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
 
   return (
     <div className="MyReservationBookingsDates">
-      <AiOutlineCalendar className="MyReservationBookingsCalendarIcon" />
+      <AiOutlineCalendar
+        data-testid="MyReservationBookingsCalendarIcon"
+        className="MyReservationBookingsCalendarIcon"
+      />
       <div className="MyReservationBookingsDatesValues">
-        <span>{reservation.start_date.toDateString()}:</span>
+        <span>{dayjs(reservation.start_date).toDate().toDateString()}:</span>
         <span>
           {startDateString} to {endDateString}
         </span>
@@ -132,4 +140,8 @@ function getReservationsHourQuantity(reservations: Reservation[]) {
   return totalHours;
 }
 
-export { MyCalendar };
+export {
+  MyCalendar,
+  getReservationsHourQuantity,
+  MyCalendarBookingReservationDetails,
+};

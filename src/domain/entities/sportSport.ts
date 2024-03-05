@@ -11,8 +11,8 @@ export interface Court {
 
   export interface Reservation {
     id: number;
-    start_date: Date;
-    end_date: Date;
+    start_date: string;
+    end_date: string;
   }
 
   export type Sport = string;
