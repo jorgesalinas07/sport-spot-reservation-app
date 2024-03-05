@@ -63,4 +63,4 @@ function TypeFilter({ name, options }: { name: String; options: Option[] }) {
   );
 }
 
-export { Filter };
+export { Filter, TypeFilter };

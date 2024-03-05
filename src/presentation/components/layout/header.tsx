@@ -17,7 +17,7 @@ function Header() {
       <Logo />
       <Search />
       <div className="CalendarIconContainer">
-        <AiOutlineCalendar onClick={handleCalendarIconClick} />
+        <AiOutlineCalendar data-testid="HeaderCalendarIcon" onClick={handleCalendarIconClick} />
       </div>
     </div>
   );
@@ -49,4 +49,4 @@ function Search() {
   );
 }
 
-export { Header };
+export { Header, Search, Logo };
